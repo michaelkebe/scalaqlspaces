@@ -47,5 +47,34 @@ class ScalaqlSpacesTest extends FlatSpec with ShouldMatchers {
     resultTuple.getField(2).getValue.asInstanceOf[Boolean] should equal (true)
     resultTuple.getField(3).getValue.asInstanceOf[Float] should equal (9.81F)
   }
+
+  it should "return a typed scala Tuple3" in {
+    val ts = new TupleSpace
+    ts << ("Hello", true, 42)
+    
+    val templateTuple = new Tuple(classOf[String], classOf[Boolean], classOf[Int])
+    // this extra specification of the type should be removed, if possible in scala...
+    ts.typedTake[String, Boolean, Int](templateTuple) match {
+      case Some(resultTuple) => {
+        resultTuple._1 should equal ("Hello")
+        resultTuple._1.getClass should equal (classOf[String])
+        resultTuple._2 should equal (true)
+        resultTuple._3 should equal (42)
+      }
+      case None => fail()
+    }
+  }
+
+  it should "return None if tempate tuple does not match" in {
+    val ts = new TupleSpace
+    ts << ("Hello", true, 42)
+
+    val templateTuple = new Tuple("Bye", classOf[Boolean], classOf[Int])
+    ts.typedTake[String, Boolean, Int](templateTuple) match {
+      case Some(resultTuple) => fail("Found tuple: " + resultTuple.toString)
+      case None => // Success
+    }
+  }
+
 }
 

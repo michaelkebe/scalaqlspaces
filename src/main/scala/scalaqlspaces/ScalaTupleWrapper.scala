@@ -36,22 +36,11 @@ class ScalaTupleSpaceWrapper(ts: TupleSpace) {
   def <<[T1, T2, T3, T4](t: Tuple4[T1, T2, T3, T4]) = {
     ts write scalaTuple2tsTuple(t)
   }
-  /*
-  def typedTake[T1](t: Tuple, dummy: Int = 0): Option[Tuple1[T1]] = {
-    val rt = ts take t
-    if (rt == null) None
-    else Some(Tuple1(getFieldAs[T1](rt, 0)))
-  }
-  def typedTake[T1, T2](t: Tuple)(implicit m: Manifest[T1]): Option[Tuple2[T1, T2]] = {
-    val rt = ts take t
-    if (rt == null) None
-    else Some((getFieldAs[T1](rt, 0), getFieldAs[T2](rt, 1)))
-  }
   def typedTake[T1, T2, T3](t: Tuple): Option[Tuple3[T1, T2, T3]] = {
     val rt = ts take t
     if (rt == null) None
     else Some((getFieldAs[T1](rt, 0), getFieldAs[T2](rt, 1), getFieldAs[T3](rt, 2)))
   }
   private def getFieldAs[T](t: Tuple, i: Int) = t.getField(i).getValue.asInstanceOf[T]
-  */
 }
+
